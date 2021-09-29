@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
 import { BankingServiceImpl } from './banking.serviceImpl';
+import { BankingServiceImplMocked } from './bankingServiceImplMocked';
+
+const NODE_ENV = process.env.NODE_ENV;
 
 @Module({
   imports: [],
@@ -7,7 +10,12 @@ import { BankingServiceImpl } from './banking.serviceImpl';
   providers: [
     {
       provide: 'BankingService',
-      useClass: BankingServiceImpl,
+      useFactory: () => {
+        if (['development', 'test'].includes(NODE_ENV)) {
+          return new BankingServiceImplMocked();
+        }
+        return new BankingServiceImpl();
+      },
     },
   ],
 })
