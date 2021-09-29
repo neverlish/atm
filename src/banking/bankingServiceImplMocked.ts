@@ -1,16 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BankingService } from './banking.service';
-
-const mockedCards = [
-  {
-    cardNumber: '1234-1234-1234',
-    pinNumber: '123',
-  },
-  {
-    cardNumber: '5674-5674-5674',
-    pinNumber: '567',
-  },
-];
+import { mockedAccounts, mockedCards } from './__fixtures__/mock';
 
 @Injectable()
 export class BankingServiceImplMocked implements BankingService {
@@ -29,5 +19,17 @@ export class BankingServiceImplMocked implements BankingService {
       throw new Error('card not found');
     }
     return card;
+  }
+
+  async getAccounts(cardNumber: string) {
+    return mockedAccounts.filter((ac) => ac.cardNumber === cardNumber);
+  }
+
+  async withdraw(accountNumber: string, money: number) {
+    return 0;
+  }
+
+  async deposit(accountNumber: string, money: number) {
+    return 0;
   }
 }
